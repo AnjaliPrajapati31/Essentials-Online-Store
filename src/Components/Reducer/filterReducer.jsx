@@ -53,7 +53,7 @@ const filterReducer=(state,action)=>{
 
             return{
                 ...state,
-                filterProducts:newSortedProduct,
+                filterProducts: newSortedProduct,
             }
 
         case "UPDATE_FILTER_VALUE":
