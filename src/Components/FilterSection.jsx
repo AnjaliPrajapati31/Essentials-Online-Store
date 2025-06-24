@@ -85,7 +85,7 @@ const FilterSection = () => {
         <h3>Colors</h3>
         <div className="filter-color-style">
           {colorOnlyData.map((currColor, index) => {
-            if (color === "all") {
+            if (currColor === "all") {
               return (
                 <button
                   key={index}
@@ -93,11 +93,12 @@ const FilterSection = () => {
                   name="color"
                   value={currColor}
                   onClick={updateFilterValue}
-                >
-                  {color === currColor ? "" : null}
+                  className="color-all--style"
+                >all
                 </button>
               );
-            } else {
+            } 
+            else{
               return (
                 <button
                   key={index}
@@ -108,11 +109,13 @@ const FilterSection = () => {
                   style={{ backgroundColor: currColor }}
                   onClick={updateFilterValue}
                 >
-                  {color === currColor ? <FaCheck/>: null}
+                  {color === currColor ? <FaCheck className="checkStyle"/>: null}
                 </button>
               );
             }
-          })}
+              
+            })}
+          
         </div>
       </div>
     </Wrapper>

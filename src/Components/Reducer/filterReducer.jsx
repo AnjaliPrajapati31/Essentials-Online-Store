@@ -6,6 +6,7 @@ const filterReducer=(state,action)=>{
                 ...state,
                 filterProducts:[...action.payload],
                 allProducts:[...action.payload],
+                filters:{...state.filters},
             }
         
         case "SET_GRIDVIEW":
@@ -79,19 +80,19 @@ const filterReducer=(state,action)=>{
            
            if(category!="all"){
             tempFilterProduct=tempFilterProduct.filter((currelem)=>{
-                currelem.category===category
+                 return currelem.category===category
             })
            }
 
            if(company!="all"){
              tempFilterProduct=tempFilterProduct.filter((currelem)=>{
-                return currelem.company.toLowerCase() === company.toLowerCase()
+                 return currelem.company.toLowerCase() === company.toLowerCase()
             })
            }
 
-           if (color){
+           if (color!="all"){
             tempFilterProduct=tempFilterProduct.filter((currelem)=>{
-                return currelem.colors.includes(color)        
+                 return currelem.colors.includes(color)        
             })
            }
 
