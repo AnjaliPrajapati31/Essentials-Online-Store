@@ -2,12 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import { useFilterContext } from "./Context/FilterContext";
 import { FaCheck } from 'react-icons/fa';
+import FormatPrice from "../Helper/FormatPrice"
+import {Button} from '../Components/Button'
 
 const FilterSection = () => {
   const {
     updateFilterValue,
-    filters: { text, category, company, color },
+    filters: { text, category, company, color,price,minPrice,maxPrice},
     allProducts,
+    clearFilters,
   } = useFilterContext();
 
   const getUniqueData = (data, property) => {
@@ -117,6 +120,16 @@ const FilterSection = () => {
             })}
           
         </div>
+      </div>
+
+      <div className="filter_price">
+        <h3>Price</h3>
+        <p><FormatPrice price={price}/></p>
+        <input type="range" name="price" value={price} min={minPrice} max={maxPrice} onChange={updateFilterValue}/>
+      </div>
+
+      <div className="filter-clear">
+            <Button className="btn" onClick={clearFilters}>Clear Filter</Button>
       </div>
     </Wrapper>
   );

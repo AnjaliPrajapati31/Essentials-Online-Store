@@ -42,6 +42,10 @@ const updateFilterValue=(e)=>{
   dispatch({type:"UPDATE_FILTER_VALUE",payload:{name,value}})
 }
 
+const clearFilters=()=>{
+  dispatch({type:"CLEAR_FILTERS"})
+}
+
 useEffect(()=>{
   dispatch({type:"FILTER_PRODUCTS"})
   dispatch({type:"SET_SORTING_DATA"})
@@ -52,7 +56,7 @@ useEffect(()=>{
 },[products]);
 
   return (
-    <FilterContext.Provider value={{...state,setGridView,setListView,sortingValue,updateFilterValue}}>{children}</FilterContext.Provider>
+    <FilterContext.Provider value={{...state,setGridView,setListView,sortingValue,updateFilterValue,clearFilters}}>{children}</FilterContext.Provider>
   )
 }
 
