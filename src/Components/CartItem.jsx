@@ -6,13 +6,8 @@ import styled from 'styled-components'
 import { useCartContext } from './Context/CartContext'
 
 const CartItem = ({id,name,image,amount,color,price}) => {
-const {removeItem}=useCartContext()
-const setDecrease=()=>{
+const {removeItem,setDecrease,setIncrease}=useCartContext()
 
-}
-const setIncrease=()=>{
-
-}
   return (
     
     <div className="cart_heading grid grid-five-column">
@@ -36,7 +31,7 @@ const setIncrease=()=>{
               <FormatPrice price={price}/>  
             </p>    
         </div>
-         <CartAmtToggle amount={amount} setIncrease={setIncrease} setDecrease={setDecrease}/>
+         <CartAmtToggle amount={amount} setIncrease={()=>setIncrease(id)} setDecrease={()=>setDecrease(id)}/>
         
         <div className="cart-hide">
             <p>

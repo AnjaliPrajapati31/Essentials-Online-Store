@@ -6,7 +6,7 @@ const CartContext=createContext()
 
 const getLocalStorage=()=>{
     let newCartData=localStorage.getItem("cartData")
-    if(!newCartData== []){
+    if(newCartData==[]){
         return [];
     }
     else{
@@ -30,6 +30,7 @@ const initialState={
         dispatch({type:"REMOVE_ITEM",payload:id})
     }
     useEffect(()=>{
+        dispatch({type:"CART_TOTAL_PRICE_ITEM"});
         localStorage.setItem("cartData",JSON.stringify(state.cart))
     },[state.cart])
 
@@ -37,7 +38,15 @@ const initialState={
         dispatch({type:"CLEAR_CART"})
     }
 
-    return <CartContext.Provider value={{...state,addToCart,removeItem,clearCart}}>{children}</CartContext.Provider>
+    const setDecrease=(id)=>{
+        dispatch({type:"SET_DECREASE",payload:id})
+    }
+
+    const setIncrease=(id)=>{
+        dispatch({type:"SET_INCREASE",payload:id})
+    }
+
+    return <CartContext.Provider value={{...state,addToCart,removeItem,clearCart,setDecrease,setIncrease}}>{children}</CartContext.Provider>
 }
 
 export const useCartContext=()=>{

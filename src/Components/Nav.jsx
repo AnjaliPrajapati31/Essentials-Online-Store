@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { FiShoppingCart } from "react-icons/fi";
 import { CgMenu , CgClose} from "react-icons/cg";
+import { useCartContext } from './Context/CartContext';
 
 const Nav = () => {
 
 const [menuIcon,setmenuIcon]=useState();
+const { total_item }= useCartContext();
 
 const Nav = styled.nav`
     .navbar-lists {
@@ -178,7 +180,7 @@ const Nav = styled.nav`
                     <NavLink to="/contact" className="navbar-link home-link" onClick={()=>setmenuIcon(false)}>Contact</NavLink>
                 </li>
                 <li>
-                    <NavLink to="/cart" className="navbar-link cart-trolley--link" onClick={()=>setmenuIcon(false)}><FiShoppingCart className="cart-trolley"/><span className="cart-total--item">10</span></NavLink>
+                    <NavLink to="/cart" className="navbar-link cart-trolley--link" onClick={()=>setmenuIcon(false)}><FiShoppingCart className="cart-trolley"/><span className="cart-total--item">{ total_item }</span></NavLink>
 
                 </li>
             </ul>
