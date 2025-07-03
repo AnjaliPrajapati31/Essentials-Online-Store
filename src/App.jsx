@@ -9,11 +9,14 @@ import Products from './assets/Pages/Products'
 import Cart from './assets/Pages/Cart'
 import Contact from './assets/Pages/Contact'
 import SingleProduct from './assets/Pages/SingleProduct'
+import SignIn from './Components/SignIn'
+import SignUp from './Components/SignUp'
 import ErrorPage from './assets/Pages/ErrorPage'
 import { GlobalStyles } from './assets/GlobalStyles'
 import { ThemeProvider } from 'styled-components'
 import Header from './Components/Header'
 import Footer from './Components/Footer'
+
 
 const App=() =>{
 
@@ -55,6 +58,8 @@ const App=() =>{
     <Route path="/contact" element={<Contact></Contact>}></Route>
     <Route path="/singleproduct/:id" element={<SingleProduct></SingleProduct>}></Route>
     <Route path="/cart" element={<Cart></Cart>}></Route>
+    <Route path="/login" element={<SignIn/>}></Route>
+    <Route path="/register" element={<SignUp/>}></Route>
     <Route path="*" element={<ErrorPage></ErrorPage>}></Route>
   </Routes>
   <Footer/>

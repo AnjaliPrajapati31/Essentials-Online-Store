@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { FiShoppingCart } from "react-icons/fi";
 import { CgMenu , CgClose} from "react-icons/cg";
 import { useCartContext } from './Context/CartContext';
+import { Button } from './Button';
 
 const Nav = () => {
 
@@ -178,6 +179,9 @@ const Nav = styled.nav`
                 </li>
                 <li>
                     <NavLink to="/contact" className="navbar-link home-link" onClick={()=>setmenuIcon(false)}>Contact</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/login"><Button>Log In</Button></NavLink>
                 </li>
                 <li>
                     <NavLink to="/cart" className="navbar-link cart-trolley--link" onClick={()=>setmenuIcon(false)}><FiShoppingCart className="cart-trolley"/><span className="cart-total--item">{ total_item }</span></NavLink>
