@@ -76,7 +76,11 @@ const HeroSection = ({myData}) => {
         <div className="container">
             <div className="grid grid-two-column">
                 <div className="hero-section-data">
-                    <p className="intro-data">Welcome to</p>
+                    <p className="intro-data">Welcome 
+                      <span>
+
+                      </span>
+                    </p>
                     <h1>{name}</h1>
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem tempore, laudantium quia eveniet facere itaque consequatur? Illum hic animi inventore natus quis quos possimus id velit, laudantium commodi dolore accusamus a!</p>
                     <NavLink><Button>Shop Now</Button></NavLink>

@@ -16,6 +16,7 @@ import { GlobalStyles } from './assets/GlobalStyles'
 import { ThemeProvider } from 'styled-components'
 import Header from './Components/Header'
 import Footer from './Components/Footer'
+import {ToastContainer} from 'react-toastify'
 
 
 const App=() =>{
@@ -62,6 +63,7 @@ const App=() =>{
     <Route path="/register" element={<SignUp/>}></Route>
     <Route path="*" element={<ErrorPage></ErrorPage>}></Route>
   </Routes>
+  <ToastContainer/>
   <Footer/>
   </BrowserRouter>
   </ThemeProvider>

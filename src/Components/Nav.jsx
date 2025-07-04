@@ -1,17 +1,20 @@
-import React, { useState } from 'react'
-import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { NavLink } from "react-router-dom";
 import { FiShoppingCart } from "react-icons/fi";
-import { CgMenu , CgClose} from "react-icons/cg";
-import { useCartContext } from './Context/CartContext';
-import { Button } from './Button';
+import { CgMenu, CgClose } from "react-icons/cg";
+import { useCartContext } from "./Context/CartContext";
+import { Button } from "./Button";
+import { auth, db } from "../Firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { toast } from "react-toastify";
 
 const Nav = () => {
+  const [menuIcon, setmenuIcon] = useState();
+  const { total_item } = useCartContext();
 
-const [menuIcon,setmenuIcon]=useState();
-const { total_item }= useCartContext();
-
-const Nav = styled.nav`
+  const Nav = styled.nav`
     .navbar-lists {
       display: flex;
       gap: 4.8rem;
@@ -164,39 +167,113 @@ const Nav = styled.nav`
       }
     }
   `;
+
+  const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+      if (currentUser) {
+        const docref = doc(db, "Users", currentUser.uid);
+        const userSnap = await getDoc(docref);
+
+        if (userSnap.exists()) {
+          setUserData(userSnap.data());
+        } else {
+          toast.warn("No data found");
+        }
+      } else {
+        setUserData(null);
+      }
+    });
+    return ()=> unSubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      toast.success("Logged out Successfully", { position: "top-center" });
+      window.location.href = "/login";
+    } catch (err) {
+      toast.error(err.message, { position: "top-center" });
+    }
+  };
   return (
     <Nav>
-        <div className={menuIcon ? "navbar active" : "navbar"}>
-            <ul className="navbar-lists">
-                <li>
-                    <NavLink to="/" className="navbar-link home-link" onClick={()=>setmenuIcon(false)}>Home</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/about" className="navbar-link home-link" onClick={()=>setmenuIcon(false)}>About</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/products" className="navbar-link home-link" onClick={()=>setmenuIcon(false)}>Products</NavLink>
-                </li>
-                <li>
-                    <NavLink to="/contact" className="navbar-link home-link" onClick={()=>setmenuIcon(false)}>Contact</NavLink>
-                </li>
-                <li>
-                  <NavLink to="/login"><Button>Log In</Button></NavLink>
-                </li>
-                <li>
-                    <NavLink to="/cart" className="navbar-link cart-trolley--link" onClick={()=>setmenuIcon(false)}><FiShoppingCart className="cart-trolley"/><span className="cart-total--item">{ total_item }</span></NavLink>
-
-                </li>
-            </ul>
-            <div className="mobile-navbar-btn ">
-                 <CgMenu name="menu-outline" className="mobile-nav-icon" onClick={()=>setmenuIcon(true)}/>
-                 <CgClose name="close-outline" className=" mobile-nav-icon close-outline" onClick={()=>setmenuIcon(false)}/>
-
-            </div>
-           
+      <div className={menuIcon ? "navbar active" : "navbar"}>
+        <ul className="navbar-lists">
+          <li>
+            <NavLink
+              to="/"
+              className="navbar-link home-link"
+              onClick={() => setmenuIcon(false)}
+            >
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/about"
+              className="navbar-link home-link"
+              onClick={() => setmenuIcon(false)}
+            >
+              About
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/products"
+              className="navbar-link home-link"
+              onClick={() => setmenuIcon(false)}
+            >
+              Products
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/contact"
+              className="navbar-link home-link"
+              onClick={() => setmenuIcon(false)}
+            >
+              Contact
+            </NavLink>
+          </li>
+          <li>
+            {user ? (
+              <Button onClick={handleLogout}>Logout</Button>
+            ) : (
+              <NavLink to="/login">
+                <Button>Log In</Button>
+              </NavLink>
+            )}
+          </li>
+          <li>
+            <NavLink
+              to="/cart"
+              className="navbar-link cart-trolley--link"
+              onClick={() => setmenuIcon(false)}
+            >
+              <FiShoppingCart className="cart-trolley" />
+              <span className="cart-total--item">{total_item}</span>
+            </NavLink>
+          </li>
+        </ul>
+        <div className="mobile-navbar-btn ">
+          <CgMenu
+            name="menu-outline"
+            className="mobile-nav-icon"
+            onClick={() => setmenuIcon(true)}
+          />
+          <CgClose
+            name="close-outline"
+            className=" mobile-nav-icon close-outline"
+            onClick={() => setmenuIcon(false)}
+          />
         </div>
+      </div>
     </Nav>
-  )
-}
+  );
+};
 
-export default Nav
+export default Nav;

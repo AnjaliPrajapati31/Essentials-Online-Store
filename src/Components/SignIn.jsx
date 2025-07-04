@@ -4,6 +4,7 @@ import { Button } from "./Button";
 import { NavLink, useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../Firebase";
+import { toast } from "react-toastify";
 
 const SignIn = () => {
   // const auth = getAuth();
@@ -18,11 +19,12 @@ const SignIn = () => {
         email,
         password
       );
-      alert("Sign-in successful!");
+      toast.success("Sign-in successful!",{position:'top-center'});
       console.log(userCredential.user);
-      navigate("/");
+      // window.location.href='/';
+      navigate('/')
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message,{position:"top-center"});
     }
   };
   return (

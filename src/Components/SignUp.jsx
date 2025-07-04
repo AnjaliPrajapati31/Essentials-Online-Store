@@ -3,23 +3,16 @@ import styled from "styled-components";
 import { Button } from "./Button";
 import { NavLink } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../Firebase";
+import { auth ,db } from "../Firebase";
+import {doc,setDoc} from 'firebase/firestore'
+import {toast} from 'react-toastify'
 
 const SignUp = () => {
   const [email, setEmail] = useState(" ");
   const [password, setPassword] = useState("");
+  const[fname,setfname]=useState(" ");
+  const[lname,setlname]=useState(" ");
   const auth = getAuth();
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed up
-      const user = userCredential.user;
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // ..
-    });
  
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -29,18 +22,33 @@ const SignUp = () => {
         email,
         password
       );
-      alert("Sign-up successful!");
-      console.log(userCredential.user);
+      const user=auth.currentUser;
+      toast.success("Sign-up successful!",{position:'top-center'});
+      console.log(user);
+      if(user){
+        await setDoc( doc (db,"Users",user.uid),{
+          email:user.email,
+          firstName:fname,
+          lastName:lname,
+        })
+      }
+      setfname(" "),
+      setlname(" "),
+      setEmail(" "),
+      setPassword(' ')
+
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message,{position:'top-center'});
     }
   };
+ 
+  
   return (
     <Wrapper className="section">
       <div className="login-card">
             <form action="#" onSubmit={handleSignUp} >
-                <input type="text" placeholder='Enter your first name' required/>
-                <input type="text" placeholder='Enter your last name' required/>
+                <input type="text" onChange={(e)=>setfname(e.target.value)} value={fname} placeholder='Enter your first name' required/>
+                <input type="text" onChange={(e)=>setlname(e.target.value)} value={lname} placeholder='Enter your last name' required/>
                 <input type="email" onChange={(e)=>setEmail(e.target.value)} value={email} placeholder='Enter your email address' required />
                 <input type="password" onChange={(e)=>setPassword(e.target.value)} value={password} placeholder='Enter your password' required hidden/>
              <Button type='submit'>Sign Up</Button>
